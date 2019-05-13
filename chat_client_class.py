@@ -69,9 +69,10 @@ class Client:
         #print("the origianl my_msg in get_msg is", len(my_msg), type(my_msg))
         #the original my_msg is empty string
 
-        my_msg = self.dialogue_box.to_send
-        print(my_msg)
-        self.dialogue_box.to_send = ""
+        my_msg = str(self.dialogue_box.to_send)
+        # print(type(my_msg),len(my_msg))
+        # print(my_msg)
+        #self.dialogue_box.to_send = ""
         '''
         #if len(msg_list) == 0:
             #msg_list.append(self.dialogue_box.to_send)
@@ -130,8 +131,8 @@ class Client:
         self.welcome_page = GUI1()
 
         self.system_msg += 'Welcome to ICS chat\n'
-
         self.system_msg += 'Please enter your name: '
+
         self.output()
 
         self.dialogue_box = GUI2(menu)
@@ -156,5 +157,6 @@ class Client:
 
         #this function is inside an infinit loop, should not call ui2 function here
         self.system_msg += self.sm.proc(my_msg, peer_msg)
+        self.dialogue_box.to_send = ""
 
 
