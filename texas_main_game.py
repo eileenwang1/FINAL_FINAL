@@ -14,7 +14,7 @@ class Players():
 
     def win(self, pot_size):
         self.chips += pot_size
-        print("you win {}, and your money now is {}".format(pot_size, self.chips))
+        print("{} win {}, and your money now is {}".format(self.name, pot_size, self.chips))
 
     def all_in(self):
         return self.chips == 0
@@ -22,7 +22,7 @@ class Players():
     def broke(self):
         return self.chips == 0
 
-    def bet(self, other, pot, your_size = 0, other_size = 0, other_all_in = False):  ### not for fold or all-in###
+    def bet(self, other, pot, your_size = 0, other_size = 0, other_all_in = False):  ### not for fold###
         #####------------------------------------------------------------########
         #       change to try-except, replace input/output by functions         #
         #####------------------------------------------------------------########
@@ -67,7 +67,7 @@ class Players():
                     bet_size = int(input("{} bets {}, you need {} to call. {} {}".format(other.name, other_size, to_call, status,instructions)))
 
             if bet_size == 0:
-                return 0
+                return FOLD
 
         else:
             all_in = self.chips
@@ -100,8 +100,8 @@ class Pot():
 
 
 pot = Pot()
-player1 = Players()
-player2 = Players()
+player1 = Players("Alice")
+player2 = Players("Bob")
 
 
 
@@ -122,34 +122,62 @@ def actions(first, second, round, pot, sb = 1, bb = 2):
     else:
         size1, size2 = 0,0
 
-    size1 += first.bet(second, pot, size1, size2)
+    current = first.bet(second, pot, size1, size2)
+    if current == FOLD:
+        player2.win(pot.size)
+        return FOLD
+    size1 += current
     # bet(self, other, pot, my_size = 0, other_size = 0):
-    size2 += second.bet(first, pot, size2, size1)
+
+    current = second.bet(first, pot, size2, size1)
+    if current == FOLD:
+        player1.win(pot.size)
+        return FOLD
+    size2 += current
+
     while not size1 == size2:
-        size1 += first.bet(second, pot, size1, size2)
+
+        current = first.bet(second, pot, size1, size2)
+        if current == FOLD:
+            player2.win(pot.size)
+            return FOLD
+        size1 += current
+        # bet(self, other, pot, my_size = 0, other_size = 0):
         if size1 == size2:
             break
 
-
-
-        size2 += second.bet(first, pot, size2, size1)
+        current = second.bet(first, pot, size2, size1)
+        if current == FOLD:
+            player1.win(pot.size)
+            return FOLD
+        size2 += current
 
 
 def game(player1, player2, pot):
-    deck=shuffle()
+    pot.reset()
+
+    deck = shuffle()
     random.shuffle(deck)
 
     print("player 1 gets",deck[0],deck[1],"\t\t\tplayer 2 gets",deck[7],deck[8])
-    actions(player2, player1, 0, pot)
+    result = actions(player2, player1, 0, pot)
+    if result == FOLD:
+        return
 
     print(deck[2],deck[3],deck[4],"\t\t\t\t",deck[2],deck[3],deck[4])
     actions(player1, player2, 1, pot)
+    if result == FOLD:
+        return
 
     print(deck[5],"\t\t\t\t\t",deck[5])
     actions(player1, player2, 2, pot)
+    if result == FOLD:
+        return
 
     print(deck[6],"\t\t\t\t\t",deck[6])
     actions(player1, player2, 3, pot)
+    if result == FOLD:
+        return
 
 
     v1=valueCards(deck[0:7])
@@ -160,17 +188,15 @@ def game(player1, player2, pot):
     if v1>v2:
         print("player 1 wins!")
         player1.win(pot.size)
-        pot.reset()
 
     elif v1<v2:
         print("player 2 wins!")
         player2.win(pot.size)
-        pot.reset()
 
     else:
         print("it is a draw.")
         player1.win(pot.size//2)
         player2.win(pot.size//2)
-        pot.reset()
 
+    pot.reset()
 game(player1, player2, pot)
