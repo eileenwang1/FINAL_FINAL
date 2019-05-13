@@ -169,5 +169,5 @@ if __name__=='__main__':
         random.shuffle(deck)
         a = deck[:7]
         print(i,a)
-        print(valueSeven(a))
+        print(value_seven(a))
         
