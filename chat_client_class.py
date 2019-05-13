@@ -23,6 +23,7 @@ class Client:
         ####change:
         self.welcome_page = None
         self.dialogue_box = None
+        self.counter = 0
 
     def quit(self):
         self.socket.shutdown(socket.SHUT_RDWR)
@@ -56,17 +57,39 @@ class Client:
         read, write, error = select.select([self.socket], [], [], 0)
         my_msg = ''
         peer_msg = []
+        #msg_list = []
         #peer_code = M_UNDEF    for json data, peer_code is redundant
         if len(self.console_input) > 0:
+            print(len(self.console_input))
+            print(type(self.console_input))
+            print(self.console_input)
             my_msg = self.console_input.pop(0)
         if self.socket in read:
             peer_msg = self.recv()
+        #print("the origianl my_msg in get_msg is", len(my_msg), type(my_msg))
+        #the original my_msg is empty string
+
+        my_msg = self.dialogue_box.to_send
+        print(my_msg)
+        self.dialogue_box.to_send = ""
+        '''
+        #if len(msg_list) == 0:
+            #msg_list.append(self.dialogue_box.to_send)
+            self.dialogue_box.to_send = ""
+            msg_list.append("")
+            my_msg = msg_list.pop(0)
+        else:
+            my_msg = ""
+        '''
+
+        #at least in local line
         return my_msg, peer_msg
 
     def output(self):
         if len(self.system_msg) > 0:
             print(self.system_msg)
             self.system_msg = ''
+            print("the output function is executed")
 
     def login(self):
         ### change
@@ -121,6 +144,7 @@ class Client:
             self.proc()
             self.output()
             time.sleep(CHAT_WAIT)
+        #self.counter = 0
         self.quit()
 
 #==============================================================================
@@ -128,12 +152,9 @@ class Client:
 #==============================================================================
     def proc(self):
         my_msg, peer_msg = self.get_msgs()
+        #print(len(my_msg))
 
         #this function is inside an infinit loop, should not call ui2 function here
-
-        #self.dialogue_box = GUI2(menu)
-        my_msg = self.dialogue_box.to_send
-        #peer_msg = ''
-
         self.system_msg += self.sm.proc(my_msg, peer_msg)
-        print("system message line gets run")
+
+

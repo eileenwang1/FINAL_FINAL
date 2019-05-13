@@ -6,7 +6,6 @@ from chat_utils import *
 import json
 from ui1_log_in import *
 from ui2_menu import *
-import chat_client_class as ccc
 
 
 class ClientSM:
@@ -16,9 +15,7 @@ class ClientSM:
         self.me = ''
         self.out_msg = ''
         self.s = s  ### s stands for socket
-        self.instance = ccc.Client()
-        self.dialogue_box = ccc.Client.dialogue_box
-        #the error message says no attribute, but why?
+
     def set_state(self, state):
         self.state = state
 
@@ -26,7 +23,6 @@ class ClientSM:
         return self.state
 
     def set_myname(self, name):
-
         self.me = name
 
     def get_myname(self):
@@ -79,9 +75,6 @@ class ClientSM:
         self.peer = ''
 
     def proc(self, my_msg, peer_msg):
-        ##????maybe should be chat_client_class
-        my_msg = dialogue_box.to_send
-        print("my_msg is", my_msg)
         self.out_msg = ''
 #==============================================================================
 # Once logged in, do a few things: get peer listing, connect, search

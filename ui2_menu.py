@@ -56,7 +56,7 @@ class GUI2:
 
             self.entry.delete(0, END)           #delete was sended to the message box
             self.to_send = message
-
+            #self.root.destroy()
             #self.scroll.set(, 1)
 
         self.frame.pack()
