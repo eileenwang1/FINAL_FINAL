@@ -6,9 +6,8 @@ import json
 from chat_utils import *
 import client_state_machine as csm
 import threading
-import tkinter
-import class_MyGUI
 from ui1_log_in import *
+from ui2_menu import *
 
 class Client:
     def __init__(self, args):
@@ -23,6 +22,7 @@ class Client:
 
         ####change:
         self.welcome_page = None
+        self.dialogue_box = None
 
     def quit(self):
         self.socket.shutdown(socket.SHUT_RDWR)
@@ -70,17 +70,19 @@ class Client:
 
     def login(self):
         ### change
+        my_msg, peer_msg = self.get_msgs()
         my_msg = self.welcome_page.name
-      #  my_msg, peer_msg = self.get_msgs()
+
         if len(my_msg) > 0:
-            self.name = my_msg
-            msg = json.dumps({"action":"login", "name":self.name})
+            print("my name is", my_msg)
+            #self.name = my_msg
+            msg = json.dumps({"action":"login", "name":self.welcome_page.name})
             self.send(msg)
             response = json.loads(self.recv())
             if response["status"] == 'ok':
                 self.state = S_LOGGEDIN
                 self.sm.set_state(S_LOGGEDIN)
-                self.sm.set_myname(self.name)
+                self.sm.set_myname(self.welcome_page.name)
                 self.print_instructions()
                 return (True)
             elif response["status"] == 'duplicate':
@@ -96,25 +98,20 @@ class Client:
             self.console_input.append(text) # no need for lock, append is thread safe
 
     def print_instructions(self):
-        set_menu()
-        #self.system_msg += menu
+        self.system_msg += menu
 
     def run_chat(self):
         self.init_chat()
 
 
-        self.welcome_page = MyGUI()
+        self.welcome_page = GUI1()
 
-    #    self.system_msg += 'Welcome to ICS chat\n'
+        self.system_msg += 'Welcome to ICS chat\n'
 
-  #      try:
-   #         gui = class_MyGUI.MyGUI()
-   #         gui.change_label('Welcome to ICS chat\n')
-   #     except:
-   #         print("this is unfortunate")
+        self.system_msg += 'Please enter your name: '
+        self.output()
 
-    #    self.system_msg += 'Please enter your name: '
-    #    self.output()
+        self.dialogue_box = GUI2(menu)
 
         while self.login() != True:
             self.output()
@@ -132,10 +129,11 @@ class Client:
     def proc(self):
         my_msg, peer_msg = self.get_msgs()
 
-        ###change
-        my_msg = gui2.to_send
-        peer_msg = ''
+        #this function is inside an infinit loop, should not call ui2 function here
 
-
+        #self.dialogue_box = GUI2(menu)
+        my_msg = self.dialogue_box.to_send
+        #peer_msg = ''
 
         self.system_msg += self.sm.proc(my_msg, peer_msg)
+        print("system message line gets run")

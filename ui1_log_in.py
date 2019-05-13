@@ -3,7 +3,7 @@ from tkinter import *
 import tkinter.messagebox
 import random
 
-class MyGUI:
+class GUI1:
     def __init__(self):
         self.name = None
 

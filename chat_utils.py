@@ -1,6 +1,7 @@
 import socket
 import time
 import ui2_menu
+import ui1_log_in
 
 # use local loop back address by default
 #CHAT_IP = '127.0.0.1'
@@ -20,7 +21,8 @@ menu = """\n++++ Choose one of the following commands
         q: to leave the chat system\n"""
 
 def set_menu():
-    gui2 = ui2_menu.MyGUI(menu)
+    ui2 = GUI2(menu)
+    return ui2.to_send
 
 
 S_OFFLINE   = 0
