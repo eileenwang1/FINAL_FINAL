@@ -19,11 +19,11 @@ class Players():
     def broke(self):
         return self.chips == 0
 
-    def bet(self, other, pot, your_size = 0, other_size = 0):
+    def bet(self, other, pot, your_size = 0, other_size = 0):  ### not for fold or all-in###
         #####------------------------------------------------------------########
         #       change to try-except, replace input/output by functions         #
         #####------------------------------------------------------------########
-        if other_size > 0:
+        if other_size - your_size > 0:
             to_call = other_size - your_size
             to_raise = other_size + to_call
             all_in = self.chips
@@ -42,7 +42,7 @@ class Players():
 
             else:
                 bet_size = int(input("{} bets {}, you need {} to call. {} {}".format(other.name, other_size, to_call, status, instructions)))
-                if bet_size < to_call:
+                if 0 < bet_size < to_call:
                     print("Warning, you need to bet at least {} to call. Wrong input again will be treated as a Fold".format(to_call))
                     bet_size = int(input("{} bets {}, you need {} to call. {} {}".format(other.name, other_size, to_call, status, instructions)))
                 elif to_call < bet_size < to_raise:
@@ -54,10 +54,13 @@ class Players():
 
         else:
             all_in = self.chips
-            status = 'Your action first. Do you want to check or bet?'
+            status = 'Do you want to check or bet?'
             instructions = '''enter 0 for check, or no more than {} for bet '''.format(all_in)
             bet_size = int(input('{} {}'.format(status, instructions)))
+        self.chip_change(bet_size, pot)
+        return bet_size
 
+    def chip_change(self, bet_size, pot):
         self.chips -= bet_size
         pot.size += bet_size
         return bet_size
@@ -91,9 +94,18 @@ random.shuffle(deck)
 
 
 def actions(first, second, round, pot, sb = 1, bb = 2):
-    size1 = first.bet(second, pot)
+    if round == 0:
+        size1 = sb
+        size2 = bb
+        first.chip_change(sb, pot)
+        second.chip_change(bb, pot)
+
+    else:
+        size1, size2 = 0,0
+
+    size1 += first.bet(second, pot, size1, size2)
     # bet(self, other, pot, my_size = 0, other_size = 0):
-    size2 = second.bet(first, pot, 0, size1)
+    size2 += second.bet(first, pot, size2, size1)
     while not size1 == size2:
         size1 += first.bet(second, pot, size1, size2)
         if size1 == size2:
@@ -101,8 +113,10 @@ def actions(first, second, round, pot, sb = 1, bb = 2):
 
         size2 += second.bet(first, pot, size2, size1)
 
+
+
 print("player 1 gets",deck[0],deck[1],"\t\t\tplayer 2 gets",deck[7],deck[8])
-actions(player1, player2, 0, pot)
+actions(player2, player1, 0, pot)
 
 print(deck[2],deck[3],deck[4],"\t\t\t\t",deck[2],deck[3],deck[4])
 actions(player1, player2, 1, pot)
