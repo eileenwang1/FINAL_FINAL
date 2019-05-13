@@ -2,10 +2,12 @@
 from tkinter import *
 import tkinter.messagebox
 import random
+from chat_client_class import *
+from chat_cmdl_client import *
 
 class GUI2:
     def __init__(self, menu):
-
+        self.system_msg = ''
 
         self.root = Tk(className='menu')
         self.frame = Frame(self.root)
@@ -43,7 +45,7 @@ class GUI2:
 
         self.frame_3.pack()
 
-        self.root.geometry("300x300")
+        self.root.geometry("500x500")
         self.root.mainloop()
 
     def send(self):
@@ -56,10 +58,14 @@ class GUI2:
 
             self.entry.delete(0, END)           #delete was sended to the message box
             self.to_send = message
-            #self.root.destroy()
-            #self.scroll.set(, 1)
 
         self.frame.pack()
+
+        my_msg = self.to_send
+        peer_msg = ''
+        self.system_msg += self.sm.proc(my_msg, peer_msg)
+        self.to_send = ''
+
 
 
 

@@ -11,5 +11,6 @@ def main():
     client = Client(args)
     client.run_chat()
 
+if __name__ == '__main__':
 
-main()
+    main()

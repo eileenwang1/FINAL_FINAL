@@ -89,8 +89,14 @@ class Client:
     def output(self):
         if len(self.system_msg) > 0:
             print(self.system_msg)
+            try:
+                self.dialogue_box.listbox.insert(END, self.system_msg)
+                self.dialogue_box.frame.pack()
+            except:
+                print("Nothing happens")
+            #add to list box
             self.system_msg = ''
-            print("the output function is executed")
+           # print("the output function is executed")
 
     def login(self):
         ### change
