@@ -29,8 +29,8 @@ class Players():
             all_in = self.chips
 
             status = 'Do you want to call, raise, or fold?'
-            instructions = '''enter 0 for fold, {} or for call, {} for all-in or anything not higher than {} for raise'''\
-                .format(to_call, to_raise, all_in)
+            instructions = '''enter 0 for fold, {0} or for call, {1} for all-in or anything between {2} and {1} for raise '''\
+                .format(to_call, all_in, to_raise)
 
             if all_in < to_call:
                 status = 'Do you want to call (all-in), or fold?'
@@ -55,7 +55,7 @@ class Players():
         else:
             all_in = self.chips
             status = 'Your action first. Do you want to check or bet?'
-            instructions = '''enter 0 for check, or no more than {} for bet'''.format(all_in)
+            instructions = '''enter 0 for check, or no more than {} for bet '''.format(all_in)
             bet_size = int(input('{} {}'.format(status, instructions)))
 
         self.chips -= bet_size
