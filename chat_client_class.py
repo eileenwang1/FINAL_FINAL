@@ -9,9 +9,10 @@ import threading
 #from ui1_log_in import *
 #from ui2_menu import *
 from ui3 import *
+import chat_cmdl_client as ccc
 
 class Client:
-    def __init__(self, args):
+    def __init__(self, args,client_ui):
         self.peer = ''
         self.console_input = []
         self.state = S_OFFLINE
@@ -22,7 +23,7 @@ class Client:
         self.args = args
 
         ####change:
-        self.ui = None
+        self.ui = client_ui
 
 
     def quit(self):
@@ -134,8 +135,8 @@ class Client:
     def print_instructions(self):
         self.system_msg += menu
 
-    def fun(self):
-        self.ui = GUI3(self)
+    #def fun(self):
+        #self.ui = GUI3(self)
 
     def run_chat(self):
         #self.ui = GUI3(self)

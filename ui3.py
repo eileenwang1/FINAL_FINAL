@@ -4,13 +4,14 @@ import tkinter.messagebox
 from chat_client_class import *
 import threading
 
-def main(client):
-    x = GUI3(client)
+def main1():
+    x = GUI3()
+    return x
 
 class GUI3:
-    def __init__(self, client):
+    def __init__(self):
         #self.system_msg = ''
-        self.client = client
+
         self.to_send = ""
         self.to_receive = ''
 
