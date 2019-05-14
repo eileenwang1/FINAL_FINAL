@@ -138,10 +138,10 @@ class Client:
 
     def run_chat(self):
 
-
-        x = threading.Thread(target=self.fun)
-        x.daemon = True
-        x.start()
+        #x = threading.Thread(target=self.fun)
+        #x.daemon = True
+        #x.start()
+        self.ui = GUI3(self)
         self.init_chat()
         #########???????
         # x = threading.Thread(target=thread_function, args=(i + 1,))

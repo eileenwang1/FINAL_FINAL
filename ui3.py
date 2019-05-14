@@ -57,7 +57,7 @@ class GUI3:
         self.frame_3.pack()
 
         self.root.geometry("500x500")
-        # self.root.mainloop()
+        self.root.mainloop()
 
         #please enter your name
 #new ui, all in one
