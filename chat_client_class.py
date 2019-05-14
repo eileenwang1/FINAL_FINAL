@@ -6,8 +6,9 @@ import json
 from chat_utils import *
 import client_state_machine as csm
 import threading
-from ui1_log_in import *
-from ui2_menu import *
+#from ui1_log_in import *
+#from ui2_menu import *
+from ui3 import *
 
 class Client:
     def __init__(self, args):
@@ -21,8 +22,9 @@ class Client:
         self.args = args
 
         ####change:
-        self.welcome_page = None
-        self.dialogue_box = None
+        #self.welcome_page = None
+        #self.dialogue_box = None
+        self.ui = None
         self.counter = 0
 
     def quit(self):
@@ -123,8 +125,11 @@ class Client:
 
 
     def read_input(self):
+        #todo: put it in ui
         while True:
-            text = sys.stdin.readline()[:-1]
+            #text = sys.stdin.readline()[:-1]
+            text = self.ui.to_send[:]
+            self.ui.to_send = ""
             self.console_input.append(text) # no need for lock, append is thread safe
 
     def print_instructions(self):
@@ -134,14 +139,14 @@ class Client:
         self.init_chat()
 
 
-        self.welcome_page = GUI1()
+        self.ui = GUI3(self)
 
         self.system_msg += 'Welcome to ICS chat\n'
         self.system_msg += 'Please enter your name: '
 
         self.output()
 
-        self.dialogue_box = GUI2(menu)
+        #self.dialogue_box = GUI2(menu)
 
         while self.login() != True:
             self.output()

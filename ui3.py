@@ -11,6 +11,7 @@ def main():
     args = parser.parse_args()
 
     client = Client(args)
+
     c_ui3 = GUI3(client)
 
     #todo: put it in ui
@@ -81,7 +82,7 @@ class GUI3:
             self.entry.delete(0, END)           #delete was sended to the message box
             self.to_send = message
 
-        #self.frame.pack()
+
         '''
         my_msg = self.to_send
         peer_msg = ''
