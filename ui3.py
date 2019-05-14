@@ -70,11 +70,10 @@ class GUI3:
             self.to_send = message
         #infinite loop to check if there is anything in self.to_receive
             #does the state matter?
-            for i in range(5):
-                if len(self.to_receive) != 0:
-                    self.listbox.insert(END, self.to_receive)
-                    self.to_receive = ""
-                time.sleep(0.5)
+            if len(self.to_receive) != 0:
+                self.listbox.insert(END, self.to_receive)
+                self.to_receive = ""
+
 
 
     #def show(self):

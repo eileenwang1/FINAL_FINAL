@@ -8,7 +8,10 @@ def main():
     parser = argparse.ArgumentParser(description='chat client argument')
     parser.add_argument('-d', type=str, default=None, help='server IP addr')
     args = parser.parse_args()
+
     client_ui = ui3.main1()
+    #how to put tihs function in threading?
+    print("the line after ui3")
     client = Client(args,client_ui)
     '''
     def fun():
@@ -18,6 +21,8 @@ def main():
     x1 = threading.Thread(target=client.run_chat)
     #x1.daemon = True
     x1.start()
+
+
 
 
     '''
@@ -30,7 +35,6 @@ def main():
     x2.daemon = True
     x2.start()
     '''
-
 
 
 
