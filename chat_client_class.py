@@ -126,9 +126,10 @@ class Client:
         #todo: put it in ui
         while True:
             #text = sys.stdin.readline()[:-1]
-            text = self.ui.to_send[:]
-            self.ui.to_send = ""
-            self.console_input.append(text) # no need for lock, append is thread safe
+            if self.ui is not None:
+                text = self.ui.to_send
+                self.ui.to_send = ""
+                self.console_input.append(text) # no need for lock, append is thread safe
 
     def print_instructions(self):
         self.system_msg += menu
@@ -137,29 +138,38 @@ class Client:
         self.ui = GUI3(self)
 
     def run_chat(self):
-
-        #x = threading.Thread(target=self.fun)
+        #self.ui = GUI3(self)
+        #x = threading.Thread(target=self.ui.mainloop)
         #x.daemon = True
         #x.start()
-        self.ui = GUI3(self)
         self.init_chat()
-        #########???????
-        # x = threading.Thread(target=thread_function, args=(i + 1,))
 
-        #th.append(x)
-        #x.start()
-        ##########?????????
+
 
         self.system_msg += 'Welcome to ICS chat\n'
         self.system_msg += 'Please enter your name: '
-
+        '''
         self.output()
-
+        x = threading.Thread(target=self.ui.send)
+        x.daemon = True
+        x.start()
+        '''
         while self.login() != True:
             self.output()
         self.system_msg += 'Welcome, ' + self.get_name() + '!'
         self.output()
+        '''
+        x1 = threading.Thread(target=self.ui.send)
+        x1.daemon = True
+        x1.start()
+        '''
         while self.sm.get_state() != S_OFFLINE:
+            '''
+            x = threading.Thread(target=self.ui.send)
+            x.daemon = True
+            x.start()
+            '''
+
             self.proc()
             self.output()
             time.sleep(20)

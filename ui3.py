@@ -4,18 +4,8 @@ import tkinter.messagebox
 from chat_client_class import *
 import threading
 
-def main():
-    import argparse
-    parser = argparse.ArgumentParser(description='chat client argument')
-    parser.add_argument('-d', type=str, default=None, help='server IP addr')
-    args = parser.parse_args()
-
-    client = Client(args)
-
-    #c_ui3 = GUI3(client)
-
-    #todo: put it in ui
-    #client.run_chat()
+def main(client):
+    x = GUI3(client)
 
 class GUI3:
     def __init__(self, client):
@@ -58,7 +48,6 @@ class GUI3:
 
         self.root.geometry("500x500")
         self.root.mainloop()
-
         #please enter your name
 #new ui, all in one
 
@@ -84,18 +73,13 @@ class GUI3:
                 if len(self.to_receive) != 0:
                     self.listbox.insert(END, self.to_receive)
                     self.to_receive = ""
-                #time.sleep(CHAT_WAIT)
+                time.sleep(0.5)
 
 
+    #def show(self):
 
-        '''
-        my_msg = self.to_send
-        peer_msg = ''
-        self.system_msg += self.sm.proc(my_msg, peer_msg)
-        self.to_send = ''
-        '''
 
 #determine state (time, who, connect, gameing)
-if __name__ == '__main__':
-    x = GUI3('1')
+#if __name__ == '__main__':
+
     # main()
