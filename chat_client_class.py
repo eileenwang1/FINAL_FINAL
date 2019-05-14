@@ -22,10 +22,8 @@ class Client:
         self.args = args
 
         ####change:
-        #self.welcome_page = None
-        #self.dialogue_box = None
         self.ui = None
-        self.counter = 0
+
 
     def quit(self):
         self.socket.shutdown(socket.SHUT_RDWR)
@@ -34,8 +32,8 @@ class Client:
     def get_name(self):
 
         #####change:
-        return self.welcome_page.name
-    #    return self.name
+        #return self.welcome_page.name
+        return self.name
 
     def init_chat(self):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM )
@@ -43,6 +41,7 @@ class Client:
         self.socket.connect(svr)
         self.sm = csm.ClientSM(self.socket)
         reading_thread = threading.Thread(target=self.read_input)
+        # a threading here, read_input function gets run over and over again
         reading_thread.daemon = True
         reading_thread.start()
 
@@ -62,16 +61,16 @@ class Client:
         #msg_list = []
         #peer_code = M_UNDEF    for json data, peer_code is redundant
         if len(self.console_input) > 0:
-            print(len(self.console_input))
-            print(type(self.console_input))
-            print(self.console_input)
+            #print(len(self.console_input))
+            #print(type(self.console_input))
+            #print(self.console_input)
             my_msg = self.console_input.pop(0)
         if self.socket in read:
             peer_msg = self.recv()
         #print("the origianl my_msg in get_msg is", len(my_msg), type(my_msg))
         #the original my_msg is empty string
 
-        my_msg = str(self.dialogue_box.to_send)
+        #my_msg = str(self.dialogue_box.to_send)
         # print(type(my_msg),len(my_msg))
         # print(my_msg)
         #self.dialogue_box.to_send = ""
@@ -92,8 +91,7 @@ class Client:
         if len(self.system_msg) > 0:
             print(self.system_msg)
             try:
-                self.dialogue_box.listbox.insert(END, self.system_msg)
-                self.dialogue_box.frame.pack()
+                self.ui.to_receive = self.system_msg
             except:
                 print("Nothing happens")
             #add to list box
@@ -103,18 +101,18 @@ class Client:
     def login(self):
         ### change
         my_msg, peer_msg = self.get_msgs()
-        my_msg = self.welcome_page.name
+        #my_msg = self.welcome_page.name
 
         if len(my_msg) > 0:
+            self.name = my_msg
             print("my name is", my_msg)
-            #self.name = my_msg
-            msg = json.dumps({"action":"login", "name":self.welcome_page.name})
+            msg = json.dumps({"action":"login", "name":self.name})
             self.send(msg)
             response = json.loads(self.recv())
             if response["status"] == 'ok':
                 self.state = S_LOGGEDIN
                 self.sm.set_state(S_LOGGEDIN)
-                self.sm.set_myname(self.welcome_page.name)
+                self.sm.set_myname(self.name)
                 self.print_instructions()
                 return (True)
             elif response["status"] == 'duplicate':
@@ -135,18 +133,27 @@ class Client:
     def print_instructions(self):
         self.system_msg += menu
 
-    def run_chat(self):
-        self.init_chat()
-
-
+    def fun(self):
         self.ui = GUI3(self)
+
+    def run_chat(self):
+
+
+        x = threading.Thread(target=self.fun)
+        x.daemon = True
+        x.start()
+        self.init_chat()
+        #########???????
+        # x = threading.Thread(target=thread_function, args=(i + 1,))
+
+        #th.append(x)
+        #x.start()
+        ##########?????????
 
         self.system_msg += 'Welcome to ICS chat\n'
         self.system_msg += 'Please enter your name: '
 
         self.output()
-
-        #self.dialogue_box = GUI2(menu)
 
         while self.login() != True:
             self.output()
@@ -155,8 +162,7 @@ class Client:
         while self.sm.get_state() != S_OFFLINE:
             self.proc()
             self.output()
-            time.sleep(CHAT_WAIT)
-        #self.counter = 0
+            time.sleep(20)
         self.quit()
 
 #==============================================================================
@@ -168,6 +174,6 @@ class Client:
 
         #this function is inside an infinit loop, should not call ui2 function here
         self.system_msg += self.sm.proc(my_msg, peer_msg)
-        self.dialogue_box.to_send = ""
+        #self.dialogue_box.to_send = ""
 
 

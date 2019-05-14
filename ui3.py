@@ -2,7 +2,7 @@ from tkinter import *
 import tkinter.messagebox
 
 from chat_client_class import *
-
+import threading
 
 def main():
     import argparse
@@ -12,19 +12,17 @@ def main():
 
     client = Client(args)
 
-    c_ui3 = GUI3(client)
+    #c_ui3 = GUI3(client)
 
     #todo: put it in ui
     #client.run_chat()
-
-
-
-
 
 class GUI3:
     def __init__(self, client):
         #self.system_msg = ''
         self.client = client
+        self.to_send = ""
+        self.to_receive = ''
 
         self.root = Tk(className='Welcome to ICS chat')
         self.frame_1 = Frame(self.root)
@@ -46,7 +44,6 @@ class GUI3:
         self.frame_1.pack()
 
         self.button1 = Button(self.frame_2, text='Send', command=self.send)
-        self.to_send = ""
 
         self.button1.pack(side=LEFT)
         self.frame_2.pack()
@@ -60,7 +57,7 @@ class GUI3:
         self.frame_3.pack()
 
         self.root.geometry("500x500")
-        self.root.mainloop()
+        # self.root.mainloop()
 
         #please enter your name
 #new ui, all in one
@@ -81,6 +78,14 @@ class GUI3:
 
             self.entry.delete(0, END)           #delete was sended to the message box
             self.to_send = message
+        #infinite loop to check if there is anything in self.to_receive
+            #does the state matter?
+            for i in range(5):
+                if len(self.to_receive) != 0:
+                    self.listbox.insert(END, self.to_receive)
+                    self.to_receive = ""
+                #time.sleep(CHAT_WAIT)
+
 
 
         '''
@@ -92,5 +97,5 @@ class GUI3:
 
 #determine state (time, who, connect, gameing)
 if __name__ == '__main__':
-
-    main()
+    x = GUI3('1')
+    # main()
