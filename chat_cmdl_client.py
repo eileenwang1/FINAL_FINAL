@@ -8,11 +8,14 @@ def main():
     parser = argparse.ArgumentParser(description='chat client argument')
     parser.add_argument('-d', type=str, default=None, help='server IP addr')
     args = parser.parse_args()
-
+    #create an instance of ui3
     client_ui = ui3.main1()
-    #how to put tihs function in threading?
+    #how to put this function (the init function of ui3) in threading?
+    #if called in threading, how can i use a variable to store the instance of ui3 i,
+    #so that the instance can be a parameter in the client class?
     print("the line after ui3")
     client = Client(args,client_ui)
+
     '''
     def fun():
         client.ui = GUI3(client)
@@ -21,20 +24,6 @@ def main():
     x1 = threading.Thread(target=client.run_chat)
     #x1.daemon = True
     x1.start()
-
-
-
-
-    '''
-    x1 = threading.Thread(target=ui3.main, args=(client,))
-    x1.start()
-    client.run_chat()
-    '''
-    '''
-    x2 = threading.Thread(target=ui3.main)
-    x2.daemon = True
-    x2.start()
-    '''
 
 
 
