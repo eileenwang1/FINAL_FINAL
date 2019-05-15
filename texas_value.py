@@ -6,6 +6,7 @@ class Card():
     def __init__(self, suit, rank):
         self.suit = suit # takes value in 1,2,3,4
         self.suit_printed = [u'\u2660', u'\u2661', u'\u2662', u'\u2663'][self.suit - 1]
+        self.suit_printed = self.suit_printed + ' '
         self.rank = rank
         self.rank_printed = ['2','3','4','5','6','7','8','9','10','J','Q','K','A'][self.rank - 2]
 

@@ -17,6 +17,11 @@ import pickle as pkl
 from chat_utils import *
 import chat_group as grp
 
+import threading
+from texas_main_game import *
+
+S_ALLIN = 'allin'
+FOLD = 'fold'
 
 class Server:
     def __init__(self):
@@ -34,6 +39,8 @@ class Server:
         self.indices = {}
         # sonnet
         self.sonnet = indexer.PIndex("AllSonnets.txt")
+        self.game_players_g = []
+
 
     def new_client(self, sock):
         # add to all sockets and to new clients
@@ -121,8 +128,8 @@ class Server:
                         {"action": "connect", "status": "no-user"})
                 mysend(from_sock, msg)
 
+
             elif msg["action"] == "connect_g":
-                print("the message that i receive is", msg)
                 to_name = msg["target"]
                 from_name = self.logged_sock2name[from_sock]
                 if to_name == from_name:
@@ -138,10 +145,53 @@ class Server:
                         to_sock = self.logged_name2sock[g]
                         mysend(to_sock, json.dumps(
                             {"action": "connect_g", "status": "request", "from": from_name}))
+
+
+                    ####change
+                    game_player_1 = Players(from_name)
+                    game_player_2 = Players(to_name)
+                    self.game_players_g.append(game_player_1)
+                    self.game_players_g.append(game_player_2)
+                    print('players established')
+
                 else:
                     msg = json.dumps(
                         {"action": "connect_g", "status": "no-user"})
                 mysend(from_sock, msg)
+
+
+                g_th = threading.Thread(target=game_start, args=(game_player_1, game_player_2))
+                #game_start(game_player_1, game_player_2)
+                #g_th.deamon = True
+                g_th.start()
+
+                print('game started')
+
+                msg = json.loads(msg)
+
+                time.sleep(CHAT_WAIT * 2)
+                for other in self.game_players_g:
+
+                    while len(other.to_recieve) > 0:
+                        msg['message'] = other.to_recieve.pop(0)
+                        # other.to_recieve = ''
+                        msg['from'] = '[server] '
+                        said2 = text_proc(msg["message"], from_name)
+
+                        # print('the action is recieved by the server and passed to the texas program',people.action)
+                        # ---- end of your code --- #
+
+                        for g in the_guys:
+                            if g == other.name:
+                                to_sock = self.logged_name2sock[g]
+                                # IMPLEMENTATION
+                                # ---- start your code ---- #
+                                # add indices to people you send, so that what you send is also in their chat history
+                                self.indices[g].add_msg_and_index(said2)
+                                # send the message, turn the dictionary into a string
+                                mysend(to_sock, json.dumps(
+                                    {"action": "exchange_g", "from": msg["from"], "message": msg["message"]}))
+
 
             # ==============================================================================
             # handle messeage exchange: IMPLEMENT THIS
@@ -177,27 +227,46 @@ class Server:
 
             elif msg["action"] == "exchange_g":
                 from_name = self.logged_sock2name[from_sock]
-                print(from_name)
-                print("this is a line from server")
                 """
                 Finding the list of people to send to and index message
                 """
                 # IMPLEMENTATION
                 # ---- start your code ---- #
                 the_guys = self.group.list_me(from_name)
-                print(the_guys)
-                said2 = text_proc(msg["message"], from_name)
-                print("GUYS Found")
-                #self.indices[from_name].add_msg_and_index(said2)
 
+                # format the message: at what time, from whom, what is the message
+                said2 = text_proc(msg["message"], from_name)
+
+                #self.indices is a dictionary: name, message and index
+                #add index in your chat history
+                self.indices[from_name].add_msg_and_index(said2)
+
+                #####change
+                for people in self.game_players_g:
+                    if people.name != from_name:
+                        continue
+                    else:
+                        people.action = msg['message']
+                        time.sleep(CHAT_WAIT)
+                        for other in self.game_players_g:
+
+                            while len(other.to_recieve) > 0:
+                                msg['message'] = other.to_recieve.pop(0)
+                               # other.to_recieve = ''
+                                msg['from'] = '[server] '
+
+                        # print('the action is recieved by the server and passed to the texas program',people.action)
                 # ---- end of your code --- #
 
-                for g in the_guys[1:]:
-                    to_sock = self.logged_name2sock[g]
-                    # IMPLEMENTATION
-                    # ---- start your code ---- #
-                    self.indices[g].add_msg_and_index(said2)
-                    mysend(to_sock, json.dumps({"action": "exchange_g", "from": msg["from"], "message": msg["message"]}))
+                                for g in the_guys:
+                                    if g == other.name:
+                                        to_sock = self.logged_name2sock[g]
+                                        # IMPLEMENTATION
+                                        # ---- start your code ---- #
+                                        #add indices to people you send, so that what you send is also in their chat history
+                                        self.indices[g].add_msg_and_index(said2)
+                                        #send the message, turn the dictionary into a string
+                                        mysend(to_sock, json.dumps({"action": "exchange_g", "from": msg["from"], "message": msg["message"]}))
 
                     # ---- end of your code --- #
 
