@@ -14,9 +14,9 @@ def main1():
     return x
 
 
-class GUI3(Root):
+class GUI3(Frame):
     def __init__(self, master=None):
-        Root.__init__(self, master)
+        Frame.__init__(self, master)
         master.geometry("500x500")
 
         self.to_send = ""
@@ -35,7 +35,7 @@ class GUI3(Root):
 
         #for i in self.menu:
             #self.listbox.insert(END, str(i))
-        self.listbox.insert(END, "Please enter your name")
+        #self.listbox.insert(END, "Please enter your name")
         self.listbox.pack(side=LEFT)
 
         self.scroll.config(command=self.listbox.yview)
@@ -53,6 +53,7 @@ class GUI3(Root):
         self.entry.pack(side=TOP)
 
         self.frame_3.pack()
+        self.pack()
 
         #self.root.geometry("500x500")
         #self.root.mainloop()

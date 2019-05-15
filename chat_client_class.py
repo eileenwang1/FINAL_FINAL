@@ -8,8 +8,60 @@ import client_state_machine as csm
 import threading
 #from ui1_log_in import *
 #from ui2_menu import *
-from ui3 import *
+
 import chat_cmdl_client as ccc
+
+
+'''
+def main3():
+    class GUI3(Frame):
+
+        def __init__(self, master=None):
+            Frame.__init__(self, master)
+            master.geometry("500x500")
+    
+            self.to_send = ""
+            self.to_receive = ''
+    
+            # self.root = Tk(className='Welcome to ICS chat')
+            self.frame_1 = Frame(master)
+            self.frame_2 = Frame(master)
+            self.frame_3 = Frame(master)
+    
+            self.scroll = Scrollbar(self.frame_1)
+            self.scroll.pack(side=RIGHT, fill=Y)
+            # self.menu = menu.split("\n")
+            # self.menu is a list of the string
+            self.listbox = Listbox(self.frame_1, yscrollcommand=self.scroll.set, width=500)
+    
+            # for i in self.menu:
+            # self.listbox.insert(END, str(i))
+            self.listbox.insert(END, "Please enter your name")
+            self.listbox.pack(side=LEFT)
+    
+            self.scroll.config(command=self.listbox.yview)
+            self.frame_1.pack()
+    
+            self.button1 = Button(self.frame_2, text='Send', command=self.send)
+    
+            self.button1.pack(side=LEFT)
+            self.frame_2.pack()
+    
+            self.prompt_label = Label(self.frame_3, text='enter below')
+            self.entry = Entry(self.frame_3, width=70)
+    
+            self.prompt_label.pack(side=TOP)
+            self.entry.pack(side=TOP)
+    
+            self.frame_3.pack()
+            self.pack()
+            
+            
+    x = GUI3
+    x1 = threading.Thread(target=client.run_chat)
+    # x1.daemon = True
+    x1.start()
+'''
 
 class Client:
     def __init__(self, args,client_ui):
