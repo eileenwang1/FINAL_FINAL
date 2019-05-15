@@ -1,24 +1,31 @@
 from tkinter import *
 import tkinter.messagebox
 
-from chat_client_class import *
+#from chat_client_class import *
 import threading
 
+Root = Tk(className='Welcome to ICS chat')
+def get_root():
+    return Root
+
+
 def main1():
-    x = GUI3()
+    x = GUI3(Root)
     return x
 
-class GUI3:
-    def __init__(self):
-        #self.system_msg = ''
+
+class GUI3(Root):
+    def __init__(self, master=None):
+        Root.__init__(self, master)
+        master.geometry("500x500")
 
         self.to_send = ""
         self.to_receive = ''
 
-        self.root = Tk(className='Welcome to ICS chat')
-        self.frame_1 = Frame(self.root)
-        self.frame_2 = Frame(self.root)
-        self.frame_3 = Frame(self.root)
+        #self.root = Tk(className='Welcome to ICS chat')
+        self.frame_1 = Frame(master)
+        self.frame_2 = Frame(master)
+        self.frame_3 = Frame(master)
 
         self.scroll = Scrollbar(self.frame_1)
         self.scroll.pack(side=RIGHT, fill=Y)
@@ -47,8 +54,8 @@ class GUI3:
 
         self.frame_3.pack()
 
-        self.root.geometry("500x500")
-        self.root.mainloop()
+        #self.root.geometry("500x500")
+        #self.root.mainloop()
         #please enter your name
 #new ui, all in one
 
