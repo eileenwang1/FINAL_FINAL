@@ -20,10 +20,9 @@ class GUI3(Frame):
         master.geometry("500x500")
 
         self.to_send = ""
-        self.to_receive = ''
-        if len(self.to_receive) != 0:
-            self.listbox.insert(END, self.to_receive)
-            self.to_receive = ""
+        self.to_receive = []
+        while len(self.to_receive) != 0:
+            self.listbox.insert(END, self.to_receive.pop(0))
 
         #self.root = Tk(className='Welcome to ICS chat')
         self.frame_1 = Frame(master)
@@ -60,11 +59,13 @@ class GUI3(Frame):
 
 
     def display(self):
-        if len(self.to_receive) != 0:
-            l = self.to_receive.split('\n')
+        while len(self.to_receive) != 0:
+            print(self.to_receive)
+            target = self.to_receive.pop(0)
+            l = target.split('\n')
             for item in l:
                 self.listbox.insert(END, item)
-            self.to_receive = ""
+
 
 
     def send(self):

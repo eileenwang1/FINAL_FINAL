@@ -66,9 +66,9 @@ class Client:
     def output(self):
         #print(self.system_msg) it is an empty str
         if len(self.system_msg) > 0:
-            print(self.system_msg)
+            #print(self.system_msg)
             try:
-                self.ui.to_receive = self.system_msg
+                self.ui.to_receive.append(self.system_msg)
                 time.sleep(0.1)
                 self.ui.display()
             except:
