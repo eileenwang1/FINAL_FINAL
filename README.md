@@ -1,13 +1,17 @@
 # FINAL_FINAL
-ics final
-
+ICS Final Project
+--
 Authors:
+--
 Zixiao Yang: Texas Poker (server side)
 Eileen Wang: GUI (client side)
+
+For a better format, please look at https://docs.google.com/document/d/1oP5Jkli0BlOXzMrC2fQj_pJFCdPpsFSN0xcXijQshAo/edit?usp=sharing
 
 ------------------------------------------------------------------------------------------------------------------------------
 
 Texas:
+--
 To run the program:
      cd final_final
      cd texas (important)
@@ -20,6 +24,7 @@ We coded the main gaming system from scratch. The system shuffles, gives out car
 ----------------------------------------------------------------------------------------------------------------------------
 
 GUI:
+--
 To run the program:
      cd FINAL_FINAL
      server: chat_server.py 
@@ -43,3 +48,8 @@ An optimization we did for the original chat system is at chat_client_class.py:
 A problem we run into:
 Some transmission of message in gui is not successful. I suspect that there is some time gap between threadings. If a message is (unfortunately) sent within the time gap, the transmission is not successful. t o fix the problem requires more knowledge of threading.
 
+-----------------------------------------
+
+Acknowledgements:
+--
+Our thanks to Joyce, Wen, Michael and Frank (from ICS afternoon session) for answering our questions and offering us suggestions.
