@@ -1,8 +1,6 @@
 from tkinter import *
 import tkinter.messagebox
 
-#from chat_client_class import *
-import threading
 
 Root = Tk(className='Welcome to ICS chat')
 def get_root():
@@ -24,20 +22,15 @@ class GUI3(Frame):
         while len(self.to_receive) != 0:
             self.listbox.insert(END, self.to_receive.pop(0))
 
-        #self.root = Tk(className='Welcome to ICS chat')
         self.frame_1 = Frame(master)
         self.frame_2 = Frame(master)
         self.frame_3 = Frame(master)
 
         self.scroll = Scrollbar(self.frame_1)
         self.scroll.pack(side=RIGHT, fill=Y)
-        #self.menu = menu.split("\n")
-        # self.menu is a list of the string
         self.listbox = Listbox(self.frame_1, yscrollcommand=self.scroll.set, width=500)
 
-        #for i in self.menu:
-            #self.listbox.insert(END, str(i))
-        #self.listbox.insert(END, "Please enter your name")
+
         self.listbox.pack(side=LEFT)
 
         self.scroll.config(command=self.listbox.yview)
@@ -60,7 +53,6 @@ class GUI3(Frame):
 
     def display(self):
         while len(self.to_receive) != 0:
-            print(self.to_receive)
             target = self.to_receive.pop(0)
             l = target.split('\n')
             for item in l:
@@ -73,26 +65,9 @@ class GUI3(Frame):
         if len(message) == 0:
             tkinter.messagebox.showinfo("Warning", "Can't sent empty message!")
         else:
-            #print("the message to send is", message)
             self.listbox.insert(END, message)   #insert into the dialogue box
                                                 #how to pass it to the server?
 
             self.entry.delete(0, END)           #delete was sended to the message box
             self.to_send = message
-            print("the message to send is", self.to_send)
-        #infinite loop to check if there is anything in self.to_receive
-            #does the state matter?
-            '''
-            if len(self.to_receive) != 0:
-                self.listbox.insert(END, self.to_receive)
-                self.to_receive = ""
 
-            '''
-
-    #def show(self):
-
-
-#determine state (time, who, connect, gameing)
-#if __name__ == '__main__':
-
-    # main()

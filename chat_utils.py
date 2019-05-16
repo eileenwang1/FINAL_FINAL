@@ -1,7 +1,6 @@
 import socket
 import time
-import ui2_menu
-import ui1_log_in
+
 
 # use local loop back address by default
 #CHAT_IP = '127.0.0.1'

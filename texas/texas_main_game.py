@@ -210,6 +210,11 @@ def game(player1, player2, pot):
     pot.reset()
     deck = shuffle()
     random.shuffle(deck)
+    blinds_msg1 = 'You bet 1 for small blind. {} bets 2 for big blind'.format(player2.name)
+    blinds_msg2 = '{} bets 1 for small blind. You bet 2 for big blind'.format(player1.name)
+    player1.out_put(blinds_msg1)
+    player2.out_put(blinds_msg2)
+
     player1_card = 'Your hand: {} {}'.format(deck[0], deck[1])
     player2_card = 'Your hand: {} {}'.format(deck[7], deck[8])
     player1.out_put(player1_card)

@@ -64,15 +64,13 @@ class Client:
         return my_msg, peer_msg
 
     def output(self):
-        #print(self.system_msg) it is an empty str
         if len(self.system_msg) > 0:
-            #print(self.system_msg)
             try:
                 self.ui.to_receive.append(self.system_msg)
                 time.sleep(0.1)
                 self.ui.display()
             except:
-                print("Nothing happens")
+                print("output to ui failed")
             self.system_msg = ''
 
     def login(self):
@@ -101,14 +99,11 @@ class Client:
     def read_input(self):
         #todo: put it in ui
         while True:
-            #text = sys.stdin.readline()[:-1]
             text = self.ui.to_send
             self.ui.to_send = ""
-            #print(text)
+
             if len(text) > 0:
                 self.console_input.append(text) # no need for lock, append is thread safe
-            #if len(self.console_input[-1]) > 0:
-                #print(self.console_input[-1])
 
     def print_instructions(self):
         self.system_msg += menu
@@ -138,10 +133,8 @@ class Client:
 #==============================================================================
     def proc(self):
         my_msg, peer_msg = self.get_msgs()
-        #print(len(my_msg))
 
-        #this function is inside an infinit loop, should not call ui2 function here
         self.system_msg += self.sm.proc(my_msg, peer_msg)
-        #self.dialogue_box.to_send = ""
+
 
 

@@ -115,7 +115,7 @@ class ClientSM:
                     else:
                         self.out_msg += 'Connection unsuccessful\n'
 
-                elif my_msg[0] == 'gg':
+                elif my_msg[0] == 'g_':
                     peer = my_msg[1:]
                     peer = peer.strip()
                     if self.gaming_to(peer) == True:

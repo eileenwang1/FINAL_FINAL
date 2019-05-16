@@ -41,7 +41,7 @@ class Players():
 
     def win(self, pot_size):
         self.chips += pot_size
-        self.out_put("Congratulations! you win {}, and your money now is {}".format(pot_size // 2, self.chips))
+        self.out_put("Congratulations! you win {}, and your money now is {}".format(ot_size // 2, self.chips))
     def lose(self, pot_size):
         self.out_put("you lose {} during the hand. Your money now is {}".format(pot_size // 2, self.chips))
     def split(self, pot_size):

@@ -4,9 +4,6 @@ Created on Sun Apr  5 00:00:32 2015
 """
 from chat_utils import *
 import json
-from ui1_log_in import *
-from ui2_menu import *
-
 
 class ClientSM:
     def __init__(self, s):
@@ -46,16 +43,10 @@ class ClientSM:
 
     def gaming_to(self, peer):
         msg = json.dumps({"action":"connect_g", "target":peer})
-        print("line {} is excecuted".format(1))
         mysend(self.s, msg)
-        print(self.s)
-        print(msg)
-        print("line {} is excecuted".format(2))
 
         response = json.loads(myrecv(self.s))
-        print("response is",response)
         if response["status"] == "success":
-            print("line {} is excecuted".format(4))
             self.peer = peer
             self.out_msg += 'You are gaming with '+ self.peer + ', good luck! \n'
             return (True)
@@ -64,7 +55,6 @@ class ClientSM:
         elif response["status"] == "self":
             self.out_msg += 'Cannot gaming with yourself (sick)\n'
         else:
-            print("line {} is excecuted".format(5))
             self.out_msg += 'User is not online, try again later\n'
         return(False)
 
@@ -209,10 +199,8 @@ class ClientSM:
                 #this part is fine
                 print("the message i intend to send is", my_msg)
                 mysend(self.s, json.dumps({"action":"exchange_g", "from":"[" + self.me + "]", "message":my_msg}))
-                print("the mysend line is also executed")
 
                 if my_msg == 'good game':
-                    print("my message good game is executed")
                     self.disconnect()
                     self.state = S_LOGGEDIN
                     self.peer = ''
@@ -220,7 +208,6 @@ class ClientSM:
             if len(peer_msg) > 0: # peer's stuff, coming in
                 # ----------your code here------#
                 peer_msg = json.loads(peer_msg)
-                print('Congratulations, here is the message', peer_msg)
         #        if peer_msg["action"] == "connect_gaming":
          #           self.out_msg += "Sorry, currently only two people are allowed to play the game"
                 if peer_msg["action"] == "connect":
@@ -230,7 +217,6 @@ class ClientSM:
                     self.state = S_LOGGEDIN
                 else:
                     self.out_msg += peer_msg["from"] + peer_msg["message"]
-                    print("the most essential line is good")
 
             if self.state == S_LOGGEDIN:
                 # Display the menu again
