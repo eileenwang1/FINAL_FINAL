@@ -1,11 +1,11 @@
 # Chat System: ICS Final Project
+This project adds a user-interface (GUI) and a texas poker game feature (Texas) to a chat system.
+
 Authors:
 --
 Zixiao Yang: Texas Poker (server side)
 
 Eileen Wang: GUI (client side)
-
-For a better format, please look at https://docs.google.com/document/d/1oP5Jkli0BlOXzMrC2fQj_pJFCdPpsFSN0xcXijQshAo/edit?usp=sharing
 
 ------------------------------------------------------------------------------------------------------------------------------
 
