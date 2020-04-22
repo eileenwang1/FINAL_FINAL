@@ -1,4 +1,4 @@
-# ICS Final Project
+# Chat System: ICS Final Project
 Authors:
 --
 Zixiao Yang: Texas Poker (server side)
